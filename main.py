@@ -5,7 +5,7 @@ import utils
 window = Tk()
 window.configure(bg="black")
 window.geometry(f"{settings.WIDTH}x{settings.HEIGHT}")
-window.title("Minesweeper Game")
+window.title("Minesweeper Games")
 window.resizable(False, False)
 frame = Frame(window, bg="red", width=settings.WIDTH, height=utils.height_percentage(25))
 frame.place(x=0, y=0)
