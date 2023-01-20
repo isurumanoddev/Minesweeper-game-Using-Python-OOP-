@@ -15,14 +15,31 @@ class Cell:
         Cell.all.append(self)
 
     def create_button_object(self, location):
-        button = Button(location, text=f"{self.row}, {self.col}", bg="black", height=1, width=4, font=("Arial", 30),foreground="white",borderwidth=6)
+        button = Button(location, text=f" {self.row},{self.col}", bg="black", height=2, width=5, font=("Arial", 18),
+                        foreground="white", borderwidth=6)
         button.bind("<Button-1>", self.left_click_action)
         button.bind("<Button-3>", self.right_click_action)
         self.cell_btn_object = button
 
     def left_click_action(self, event):
-        print(event)
         print("left click")
+        if self.is_mine == True:
+            self.show_mine()
+
+        else:
+            self.show_cell()
+
+    def get_cell_by_axis(self, row, column):
+        for cell in Cell.all:
+            if cell.row == row and cell.col == column:
+                return cell
+
+    def show_cell(self):
+        print(self.get_cell_by_axis(0, 0))
+        self.cell_btn_object.config(bg="white", foreground="green")
+
+    def show_mine(self):
+        self.cell_btn_object.config(bg="red")
 
     def right_click_action(self, event):
         print(event)

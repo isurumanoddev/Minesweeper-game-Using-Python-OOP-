@@ -21,7 +21,9 @@ for row in range(7):
         c = Cell(row, column)
         c.create_button_object(center_frame)
         c.cell_btn_object.grid(row=row, column=column)
-        print(c.is_mine,c.row,c.col)
+
 Cell.randomize_mine()
+# for cell in Cell.all:
+#     print(cell, cell.is_mine)
 
 window.mainloop()
