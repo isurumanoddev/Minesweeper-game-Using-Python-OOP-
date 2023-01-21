@@ -1,10 +1,11 @@
 import random
-from tkinter import Button
+from tkinter import *
 import settings
 
 
 class Cell:
     all = []
+    cell_count_object = None
 
     def __init__(self, x, y, is_mine=False):
         self.y = y
@@ -14,17 +15,33 @@ class Cell:
         Cell.all.append(self)
 
     def create_button_object(self, location):
-        button = Button(location, text=f" {self.x},{self.y}", bg="black", height=1, width=3, font=("Arial", 14),
+        button = Button(location, text="", bg="black", height=1, width=3, font=("Arial", 14),
                         foreground="white", borderwidth=6)
         button.bind("<Button-1>", self.left_click_action)
         button.bind("<Button-3>", self.right_click_action)
         self.cell_btn_object = button
+
+    @staticmethod
+    def create_cell_count_label(location):
+        label = Label(location, text=f"Cells \n {settings.CELL_COUNT}",font=("",32))
+        Cell.cell_count_object = label
 
     def left_click_action(self, event):
         if self.is_mine:
             self.show_mine()
 
         else:
+            remaining = 96
+            for row in range(8):
+                for column in range(12):
+                    if self.cell_btn_object["text"] == "1":
+                        remaining -= 1
+                        print(remaining)
+            if self.surrounded_cells_mines_count == 0:
+                print("mines count 0")
+                self.cell_btn_object.config(bg="white", foreground="green", text="", )
+                for cell in self.surrounded_cells:
+                    cell.show_cell()
             self.show_cell()
 
     def get_cell_by_axis(self, x, y):
@@ -33,7 +50,9 @@ class Cell:
                 return cell
 
     def show_cell(self):
-        self.surrounded_cells_mines_count()
+        self.cell_btn_object.config(bg="#01E800", text=f"{self.surrounded_cells_mines_count} ", foreground="black")
+
+
     @property
     def surrounded_cells(self):
         cells = [
@@ -49,18 +68,18 @@ class Cell:
         cells = [cell for cell in cells if cell is not None]
         return cells
 
-    # @property
+    @property
     def surrounded_cells_mines_count(self):
         count = 0
         for cell in self.surrounded_cells:
             if cell.is_mine:
                 count += 1
-                cell.cell_btn_object.config(bg="#07A481")
+                # cell.cell_btn_object.config(bg="red")
+            #
+            # else:
+            #     cell.cell_btn_object.config(bg="white", foreground="green", text=" ", )
 
-            else:
-                cell.cell_btn_object.config(bg="white", foreground="green", text=" ", )
-
-        self.cell_btn_object.config(bg="#01E800", text=f"{count} ")
+        return count
 
     def show_mine(self):
         self.cell_btn_object.config(bg="red")

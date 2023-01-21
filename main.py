@@ -16,14 +16,15 @@ center_frame = Frame(window, bg="#976F0D", width=utils.width_percentage(85), hei
 center_frame.place(x=utils.width_percentage(15), y=utils.height_percentage(15))
 
 
-for row in range(7):
-    for column in range(11):
+for row in range(8):
+    for column in range(12):
         c = Cell(row, column)
         c.create_button_object(center_frame)
         c.cell_btn_object.grid(row=row, column=column)
 
 Cell.randomize_mine()
-# for cell in Cell.all:
-#     print(cell, cell.is_mine)
+
+Cell.create_cell_count_label(left_frame)
+Cell.cell_count_object.place(x=0,y=0)
 
 window.mainloop()
