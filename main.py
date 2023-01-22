@@ -15,6 +15,15 @@ left_frame.place(x=0, y=utils.height_percentage(15))
 center_frame = Frame(window, bg="#976F0D", width=utils.width_percentage(85), height=utils.height_percentage(85))
 center_frame.place(x=utils.width_percentage(15), y=utils.height_percentage(15))
 
+for row in range(7):
+    for column in range(10):
+        c = Cell(row, column)
+        c.create_button(center_frame)
+        c.cell_btn_object.grid(row=row, column=column)
 
 
+Cell.randomize_mines()
+
+for cell in Cell.all:
+    print(cell.is_mine)
 window.mainloop()
