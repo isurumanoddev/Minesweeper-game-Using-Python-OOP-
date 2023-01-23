@@ -25,7 +25,11 @@ for row in range(7):
 
 Cell.randomize_mines()
 Cell.create_cell_count_label(frame)
-Cell.create_cell_count_label_.place(x=0,y=0)
+Cell.create_cell_count_label_.place(x=0, y=0)
+
+Cell.create_mine_count_label(frame)
+Cell.mine_count_label_.place(x=250, y=0)
+
+Cell.test_button(frame)
+
 window.mainloop()
-
-
