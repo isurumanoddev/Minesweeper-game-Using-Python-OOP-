@@ -1,4 +1,6 @@
 from tkinter import *
+
+import cell
 from cell import Cell
 import settings
 import utils
@@ -21,9 +23,7 @@ for row in range(7):
         c.create_button(center_frame)
         c.cell_btn_object.grid(row=row, column=column)
 
-
 Cell.randomize_mines()
-
-for cell in Cell.all:
-    print(cell.is_mine)
 window.mainloop()
+
+
