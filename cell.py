@@ -18,12 +18,12 @@ class Cell:
         self.is_mine_candidate = False
         self.is_mine = is_mine
         self.cell_btn_object = None
-        self.btn_object = None
+
         Cell.all.append(self)
 
     def test_button(self, location):
         test_button = Button(location, text="asdsadsad", bg="red")
-        self.btn_object =test_button
+        self.btn_object = test_button
 
     def create_button(self, location):
         button = Button(location, text="", font=("", 20), width=3, height=1, bg="black")
@@ -32,27 +32,37 @@ class Cell:
         button.bind("<Button-3>", self.right_click_action)
 
     def left_click_action(self, event):
-        if self.is_mine:
-            self.show_mine()
-        else:
-            if self.surrounded_cells_mine_count == 0:
-                for cell in self.surrounded_cells:
-                    cell.show_cell()
-            self.show_cell()
-        # Cell.create_cell_count_label_.config(text=f"Cells left{Cell.cell_count}")
+        if not self.is_mine_candidate:
+            if self.is_mine:
+                self.show_mine()
+                self.disable_buttons()
+
+            else:
+                if self.surrounded_cells_mine_count == 0:
+                    for cell in self.surrounded_cells:
+                        cell.show_cell()
+                self.show_cell()
+                if Cell.cell_count == settings.MINES_COUNT:
+                    ctypes.windll.user32.MessageBoxW(0, "Congratulations", "Game over", 0)
+
+
+    def disable_buttons(self):
+        for cell in Cell.all:
+            cell.cell_btn_object.config(state=DISABLED)
 
     def right_click_action(self, event):
-        print("Right Click")
-        if not self.is_mine_candidate:
-            self.cell_btn_object.config(bg="orange")
-            self.is_mine_candidate = True
-            Cell.mine_candidate_count -= 1
-            Cell.mine_count_label_.config(text=f"Cells left{Cell.mine_candidate_count}")
-        else:
-            self.cell_btn_object.config(bg="black")
-            self.is_mine_candidate = False
-            Cell.mine_candidate_count += 1
-            Cell.mine_count_label_.config(text=f"Cells left{Cell.mine_candidate_count}")
+        if not self.is_open:
+            print("Right Click")
+            if not self.is_mine_candidate:
+                self.cell_btn_object.config(bg="orange")
+                self.is_mine_candidate = True
+                Cell.mine_candidate_count -= 1
+                Cell.mine_count_label_.config(text=f"Cells left{Cell.mine_candidate_count}")
+            else:
+                self.cell_btn_object.config(bg="black")
+                self.is_mine_candidate = False
+                Cell.mine_candidate_count += 1
+                Cell.mine_count_label_.config(text=f"Cells left{Cell.mine_candidate_count}")
 
     @staticmethod
     def randomize_mines():
@@ -72,6 +82,7 @@ class Cell:
 
     def show_mine(self):
         self.cell_btn_object.config(bg="red")
+        ctypes.windll.user32.MessageBoxW(0, "you clicked on a mine", "Game over", 0)
 
     def show_cell(self):
         if not self.is_open:
