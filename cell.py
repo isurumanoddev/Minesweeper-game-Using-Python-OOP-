@@ -5,6 +5,8 @@ import settings
 
 class Cell:
     all = []
+    create_cell_count_label_ = None
+    cell_count = 70
 
     def __init__(self, x, y, is_mine=False):
         self.y = y
@@ -20,7 +22,6 @@ class Cell:
         button.bind("<Button-3>", self.right_click_action)
 
     def left_click_action(self, event):
-
         if self.is_mine:
             self.show_mine()
         else:
@@ -28,6 +29,7 @@ class Cell:
                 for cell in self.surrounded_cells:
                     cell.show_cell()
             self.show_cell()
+        # Cell.create_cell_count_label_.config(text=f"Cells left{Cell.cell_count}")
 
     def right_click_action(self, event):
         print("Right Click")
@@ -39,14 +41,19 @@ class Cell:
         for cell in picked_cells:
             cell.is_mine = True
 
-    def __repr__(self):
-        return f"Cell({self.x},{self.y})"
+    @staticmethod
+    def create_cell_count_label(location):
+        label = Label(location, text=f"Cells Left 70", font=("", 15), width=20)
+        Cell.create_cell_count_label_ = label
 
     def show_mine(self):
         self.cell_btn_object.config(bg="red")
 
     def show_cell(self):
+        Cell.cell_count -= 1
+
         self.cell_btn_object.config(bg="green", text=f"{self.surrounded_cells_mine_count}")
+        Cell.create_cell_count_label_.config(text=f"Cells left{Cell.cell_count}")
 
     @property
     def surrounded_cells_mine_count(self):
@@ -76,3 +83,6 @@ class Cell:
         ]
         cells = [cell for cell in cells if cell is not None]
         return cells
+
+    def __repr__(self):
+        return f"Cell({self.x},{self.y})"

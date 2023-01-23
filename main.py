@@ -24,6 +24,8 @@ for row in range(7):
         c.cell_btn_object.grid(row=row, column=column)
 
 Cell.randomize_mines()
+Cell.create_cell_count_label(frame)
+Cell.create_cell_count_label_.place(x=0,y=0)
 window.mainloop()
 
 
